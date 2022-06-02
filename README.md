@@ -1,42 +1,36 @@
-<img width="120" height="120" align="left" src="./assets/guardian.png" alt="Guardian2 Logo">
+<img width="120" height="120" align="left" src="./assets/hideinterface.png" alt="HideInterface Logo">
 
-#### V Rising - Server Plugin
+#### V Rising - Client Plugin
 
-# Guardian 2
+# HideInterface
 
 ### Description
 
-Do you want to make a private server password protected, and fearing about players that share your password ? Or you just want to have a whitelist ? 
-
-Guardian is here for you, a simple whitelist system to let you the choice of who can connect on your server.
+Toggle the game interface with F11 key, now with an configuration file to set your own custom key!
 
 ### Features
 🗒️ Configurable
 
-👟 Automatic Kick system
-
-📜 Whitelist system
-
 ⚙️ Hot reloading
 
+### Screenshots
+![With interface](https://i.imgur.com/pQv9MaU.png)
+![Without interface](https://i.imgur.com/KpRqrvp.png)
+
 ### Installation
-- Install [BepInExPack V Rising](https://v-rising.thunderstore.io/package/BepInEx/BepInExPack_V_Rising/) on your server
-- Extract ``me.arwent.Guardian2`` folder into _(VRising Server folder)/BepInEx/plugins_
+- Install [BepInExPack V Rising](https://v-rising.thunderstore.io/package/BepInEx/BepInExPack_V_Rising/)
+- **IMPORTANT** If you have already installed HideInterface, please delete all the files you already have
+- Extract ``me.arwent.HideInterface`` folder into _(VRising folder)/BepInEx/plugins_
 
 ### Configuration
-- Open ``me.arwent.Guardian2.Configuration.xml`` with your favorite text editor
-
-### Usage
-- Open ``me.arwent.Guardian2.Whitelist.txt`` with your favorite text editor
-- Add the player ``SteamID`` into it
-- Save
+- Open ``me.arwent.HideInterface.Configuration.xml`` with your favorite text editor
+- Edit what you wish
+- Save and let the plugin hot reload your file without needing to restart your game
 
 ### Support
 - [V Rising Mod Community](https://discord.gg/CWzkHvekg3) and ping `@Arwent#6190`
 
 ### Changelog
-`2.0.0` Totally reworked the plugin and open sourced
-
-`1.1.0` Added automatic Kick feature
+`1.1.0` Added a configuration file for custom key and if you wish to hide the version watermark at the bottom right of the game
 
 `1.0.0` First release

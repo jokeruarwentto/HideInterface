@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<AssemblyName>me.arwent.HideInterface</AssemblyName>
+		<Product>HideInterface</Product>
+		<Description>Toggle the game interface with F11 key.</Description>
+		<Version>1.1.0</Version>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="BepInEx.IL2CPP" Version="6.0.0-*" IncludeAssets="compile" />
+		<PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="Il2Cppmscorlib">
+		  <HintPath>..\..\unhollowed\Il2Cppmscorlib.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine">
+			<HintPath>..\..\unhollowed\UnityEngine.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.CoreModule">
+		  <HintPath>..\..\unhollowed\UnityEngine.CoreModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.InputLegacyModule">
+		  <HintPath>..\..\unhollowed\UnityEngine.InputLegacyModule.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+</Project>
