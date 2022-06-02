@@ -39,7 +39,7 @@ public struct PluginConfigurationData
     public XmlComment IncludeVersionWatermarkComment
     {
         get => new XmlDocument().CreateComment(
-            "If you want to hide version watermark too at the bottom right along your interface.");
+            "If you want to hide version watermark too at the bottom right with your game interface.");
         set { }
     }
 
