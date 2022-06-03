@@ -1,6 +1,5 @@
-﻿using System.IO;
-using HideInterface.Helpers;
-using UnityEngine;
+﻿using UnityEngine;
+using Wetstone.API;
 
 namespace HideInterface;
 
@@ -11,10 +10,8 @@ public class HideInterface : MonoBehaviour
     /// </summary>
     public static HideInterface Instance;
 
-    private bool ConfigurationFileChanged;
-
-    private FileSystemWatcher FileWatcher;
     private GameObject GameInterface;
+    private Keybinding ToggleInterfaceKeybind;
     private GameObject VersionWatermark;
 
     /// <summary>
@@ -24,7 +21,14 @@ public class HideInterface : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        InitializeFileWatcher();
+
+        ToggleInterfaceKeybind = KeybindManager.Register(new KeybindingDescription
+        {
+            Id = "me.arwent.HideInterface",
+            Category = "Arwent Cauro's Projects",
+            Name = "Toggle Interface",
+            DefaultKeybinding = KeyCode.F11
+        });
     }
 
     /// <summary>
@@ -33,46 +37,20 @@ public class HideInterface : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (ConfigurationFileChanged)
-            if (!PluginConfiguration.Get().Enabled)
-                Plugin.Logger.LogInfo("Do something there.");
+        if (!Plugin.Enabled.Value)
+                return;
 
         if (GameInterface == null && GameObject.Find("HUDCanvas(Clone)") is var _GameInterface)
             GameInterface = _GameInterface;
 
-        if (PluginConfiguration.Get().IncludeVersionWatermark)
+        if (Plugin.IncludeVersionWatermark.Value)
             if (VersionWatermark == null && GameObject.Find("VersionString") is var _VersionWatermark)
                 VersionWatermark = _VersionWatermark;
 
-        if (Input.GetKeyDown(PluginConfiguration.Get().KeyCode))
+        if (Input.GetKeyDown(ToggleInterfaceKeybind.Primary) || Input.GetKeyDown(ToggleInterfaceKeybind.Secondary))
         {
             if (VersionWatermark != null) VersionWatermark.SetActive(!VersionWatermark.active);
             if (GameInterface != null) GameInterface.SetActive(!GameInterface.active);
         }
-    }
-
-    /// <summary>
-    ///     This is the system we need to hot reload our configuration file.
-    /// </summary>
-    private void InitializeFileWatcher()
-    {
-        FileWatcher = new FileSystemWatcher(Plugin.PluginPath)
-        {
-            NotifyFilter = NotifyFilters.LastWrite,
-            Filter = Plugin.PluginConfigurationFileName
-        };
-
-        FileWatcher.Changed += (_, _) =>
-        {
-            PluginConfiguration.Read();
-            ConfigurationFileChanged = true;
-        };
-
-        FileWatcher.EnableRaisingEvents = true;
-
-#if DEBUG
-        Plugin.Logger.LogInfo(
-            $"FileWatcher now watch [{Path.Combine(Plugin.PluginPath, Plugin.PluginConfigurationFileName)}].");
-#endif
     }
 }

@@ -1,14 +1,18 @@
 ﻿using System;
 using System.IO;
 using BepInEx;
+using BepInEx.Configuration;
 using BepInEx.IL2CPP;
 using BepInEx.Logging;
-using HideInterface.Helpers;
 using UnhollowerRuntimeLib;
+using Wetstone.API;
+using Object = UnityEngine.Object;
 
 namespace HideInterface;
 
 [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+[BepInDependency("xyz.molenzwiebel.wetstone")]
+[Reloadable]
 public class Plugin : BasePlugin
 {
     /// <summary>
@@ -16,8 +20,8 @@ public class Plugin : BasePlugin
     /// </summary>
     public static ManualLogSource Logger;
 
-    public static string PluginPath;
-    public static string PluginConfigurationFileName;
+    public static ConfigEntry<bool> Enabled;
+    public static ConfigEntry<bool> IncludeVersionWatermark;
 
     /// <summary>
     ///     The initialization of the plugin.
@@ -25,8 +29,8 @@ public class Plugin : BasePlugin
     public Plugin()
     {
         Logger = Log;
-        PluginPath = Path.GetDirectoryName(typeof(Plugin).Assembly.Location);
-        PluginConfigurationFileName = $"{PluginInfo.PLUGIN_GUID}.Configuration.xml";
+        Enabled = Config.Bind("General", "Enabled", true, "Whether to enable this plugin.");
+        IncludeVersionWatermark = Config.Bind("General", "IncludeVersionWatermark", true, "Hide the version watermark at the bottom right of the screen when toggling interface.");
     }
 
     /// <summary>
@@ -36,9 +40,8 @@ public class Plugin : BasePlugin
     {
         try
         {
-            Log.LogInfo($"Loading [{PluginInfo.PLUGIN_NAME} {PluginInfo.PLUGIN_VERSION}] from [{PluginPath}]");
+            Log.LogInfo($"Loading [{PluginInfo.PLUGIN_NAME} {PluginInfo.PLUGIN_VERSION}]");
 
-            PluginConfiguration.Read();
             Register();
 
             Log.LogInfo($"Loaded successfully [{PluginInfo.PLUGIN_NAME} {PluginInfo.PLUGIN_VERSION}]");
@@ -57,5 +60,14 @@ public class Plugin : BasePlugin
     {
         ClassInjector.RegisterTypeInIl2Cpp<HideInterface>();
         AddComponent<HideInterface>();
+    }
+
+    /// <summary>
+    ///     The unloading method from BasePlugin of BepInEx.
+    /// </summary>
+    public override bool Unload()
+    {
+        Object.Destroy(HideInterface.Instance);
+        return true;
     }
 }
